@@ -1,0 +1,182 @@
+/* ================= MAIN CONTAINER ================= */
+.login-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* ================= LEFT PANEL ================= */
+.left-panel {
+  flex: 1;
+  position: relative;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+/* DARK OVERLAY CONTENT */
+.overlay {
+  width: 100%;
+  padding: 80px;
+  background: rgba(0, 0, 0, 0.65);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.overlay h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.overlay p {
+  max-width: 400px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* ================= STATS SECTION ================= */
+.stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  text-align: center;
+  transition: 0.3s;
+  min-width: 120px;
+}
+
+.stat-card h3 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-card p {
+  font-size: 14px;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+/* ================= RIGHT PANEL ================= */
+.right-panel {
+  flex: 1;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.right-panel h2 {
+  font-size: 28px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.right-panel p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* ================= ROLE BUTTONS ================= */
+.role-selection {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.role-selection button {
+  padding: 8px 15px;
+  border: 1px solid #2563eb;
+  background: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.role-selection button:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.role-selection .active {
+  background: #2563eb;
+  color: white;
+}
+
+/* ================= FORM ================= */
+.right-panel form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.right-panel input {
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+.right-panel input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.right-panel button[type="submit"] {
+  padding: 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.right-panel button[type="submit"]:hover {
+  background-color: #1d4ed8;
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    height: 40vh;
+  }
+
+  .overlay {
+    padding: 40px;
+  }
+
+  .right-panel {
+    height: 60vh;
+  }
+}
+
+/* ================= FADE ANIMATION ================= */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
