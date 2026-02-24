@@ -54,23 +54,24 @@ function Login() {
       >
         <div className="overlay">
           <h1>
-            Smart City <br /> Management Portal
+            Civic Nexus
           </h1>
+
           <p>
-            Connecting citizens with services and empowering
-            administrators to build a better future.
+            A Smart Digital Governance Platform empowering citizens
+            with seamless city services and real-time solutions.
           </p>
 
           {/* STATS */}
           <div className="stats">
             <div className="stat-card">
               <h3>24/7</h3>
-              <p>Service Access</p>
+              <p>Citizen Service Access</p>
             </div>
 
             <div className="stat-card">
               <h3>98%</h3>
-              <p>Issue Resolution</p>
+              <p>Issue Resolution Rate</p>
             </div>
           </div>
         </div>
@@ -78,7 +79,7 @@ function Login() {
 
       {/* RIGHT PANEL */}
       <div className="right-panel">
-        <h2>Welcome back</h2>
+        <h2>Welcome Back</h2>
         <p>Please sign in to continue</p>
 
         {/* ROLE SELECTION */}
@@ -125,7 +126,7 @@ function Login() {
           <button type="submit">Sign In</button>
         </form>
 
-        {/* 🔥 CREATE ACCOUNT LINK */}
+        {/* CREATE ACCOUNT LINK */}
         {role === "user" && (
           <p style={{ marginTop: "15px" }}>
             New user?{" "}
@@ -141,9 +142,7 @@ function Login() {
             </span>
           </p>
         )}
-
       </div>
-
     </div>
   );
 }
