@@ -14,7 +14,7 @@ function Login() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    // 🔐 Admin Login
+    // 🔐 ADMIN LOGIN
     if (role === "admin") {
       if (email === "admin@gmail.in" && password === "admin123") {
         setError("");
@@ -22,12 +22,23 @@ function Login() {
       } else {
         setError("Invalid Admin credentials!");
       }
+      return;
     }
 
-    // 👤 User Login
+    // 👤 USER LOGIN (Check Registered User)
     if (role === "user") {
-      setError("");
-      navigate("/user");
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+
+      if (
+        storedUser &&
+        storedUser.email === email &&
+        storedUser.password === password
+      ) {
+        setError("");
+        navigate("/user");
+      } else {
+        setError("Invalid User credentials!");
+      }
     }
   };
 
@@ -113,6 +124,24 @@ function Login() {
 
           <button type="submit">Sign In</button>
         </form>
+
+        {/* 🔥 CREATE ACCOUNT LINK */}
+        {role === "user" && (
+          <p style={{ marginTop: "15px" }}>
+            New user?{" "}
+            <span
+              style={{
+                color: "#2563eb",
+                cursor: "pointer",
+                fontWeight: "600"
+              }}
+              onClick={() => navigate("/register")}
+            >
+              Create an Account
+            </span>
+          </p>
+        )}
+
       </div>
 
     </div>
