@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 import "./Login.css";
 import cityImage from "../assets/city.jpg";
 
@@ -8,13 +10,16 @@ function Login() {
   const [role, setRole] = useState("user");
   const [error, setError] = useState("");
 
+  // ===============================
+  // 🔐 NORMAL LOGIN
+  // ===============================
   const handleLogin = (e) => {
     e.preventDefault();
 
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    // 🔐 ADMIN LOGIN
+    // ADMIN LOGIN
     if (role === "admin") {
       if (email === "admin@gmail.in" && password === "admin123") {
         setError("");
@@ -25,20 +30,33 @@ function Login() {
       return;
     }
 
-    // 👤 USER LOGIN (Check Registered User)
-    if (role === "user") {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
+    // USER LOGIN
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
-      if (
-        storedUser &&
-        storedUser.email === email &&
-        storedUser.password === password
-      ) {
-        setError("");
-        navigate("/user");
-      } else {
-        setError("Invalid User credentials!");
-      }
+    if (
+      storedUser &&
+      storedUser.email === email &&
+      storedUser.password === password
+    ) {
+      setError("");
+      navigate("/user");
+    } else {
+      setError("Invalid User credentials!");
+    }
+  };
+
+  // ===============================
+  // 🔵 GOOGLE LOGIN
+  // ===============================
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log("Google User:", result.user);
+      setError("");
+      navigate("/user");
+    } catch (err) {
+      console.error("Google Error:", err.code);
+      setError(err.message);
     }
   };
 
@@ -48,21 +66,16 @@ function Login() {
       {/* LEFT PANEL */}
       <div
         className="left-panel"
-        style={{
-          backgroundImage: `url(${cityImage})`,
-        }}
+        style={{ backgroundImage: `url(${cityImage})` }}
       >
         <div className="overlay">
-          <h1>
-            Civic Nexus
-          </h1>
+          <h1>Civic Nexus</h1>
 
           <p>
             A Smart Digital Governance Platform empowering citizens
             with seamless city services and real-time solutions.
           </p>
 
-          {/* STATS */}
           <div className="stats">
             <div className="stat-card">
               <h3>24/7</h3>
@@ -82,7 +95,7 @@ function Login() {
         <h2>Welcome Back</h2>
         <p>Please sign in to continue</p>
 
-        {/* ROLE SELECTION */}
+        {/* ROLE SWITCH */}
         <div className="role-selection">
           <button
             type="button"
@@ -118,7 +131,7 @@ function Login() {
           />
 
           {error && (
-            <p style={{ color: "red", marginBottom: "10px" }}>
+            <p style={{ color: "red", marginBottom: "10px", fontSize: "14px" }}>
               {error}
             </p>
           )}
@@ -126,9 +139,39 @@ function Login() {
           <button type="submit">Sign In</button>
         </form>
 
-        {/* CREATE ACCOUNT LINK */}
+        {/* GOOGLE BUTTON (Only for User) */}
         {role === "user" && (
-          <p style={{ marginTop: "15px" }}>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            style={{
+              marginTop: "15px",
+              backgroundColor: "#ffffff",
+              color: "#444",
+              padding: "10px",
+              width: "100%",
+              border: "1px solid #dadce0",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "500",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px"
+            }}
+          >
+            <img
+              src="https://developers.google.com/identity/images/g-logo.png"
+              alt="google"
+              style={{ width: "18px", height: "18px" }}
+            />
+            Sign in with Google
+          </button>
+        )}
+
+        {/* CREATE ACCOUNT */}
+        {role === "user" && (
+          <p style={{ marginTop: "15px", fontSize: "14px" }}>
             New user?{" "}
             <span
               style={{
