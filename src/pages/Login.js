@@ -22,15 +22,13 @@ function Login() {
     // 👑 ADMIN LOGIN
     if (role === "admin") {
       if (email === "admin@gmail.in" && password === "admin123") {
-
-        localStorage.setItem("adminLoggedIn", "true"); // ✅ store admin login
+        localStorage.setItem("adminLoggedIn", "true");
         localStorage.removeItem("userLoggedIn");
 
         setError("");
         navigate("/success", {
           state: { message: "Welcome Admin 👑" }
         });
-
       } else {
         setError("Invalid Admin credentials!");
       }
@@ -45,15 +43,13 @@ function Login() {
       storedUser.email === email &&
       storedUser.password === password
     ) {
-
-      localStorage.setItem("userLoggedIn", "true"); // ✅ store user login
+      localStorage.setItem("userLoggedIn", "true");
       localStorage.removeItem("adminLoggedIn");
 
       setError("");
       navigate("/success", {
         state: { message: "Welcome Back 👋" }
       });
-
     } else {
       setError("Invalid User credentials!");
     }
@@ -67,24 +63,23 @@ function Login() {
       const result = await signInWithPopup(auth, provider);
       console.log("Google User:", result.user);
 
-      localStorage.setItem("userLoggedIn", "true"); // ✅ store login
+      localStorage.setItem("userLoggedIn", "true");
       localStorage.removeItem("adminLoggedIn");
 
       setError("");
       navigate("/success", {
         state: { message: "Welcome Back 👋" }
       });
-
     } catch (err) {
       console.error("Google Error:", err.code);
-      setError(err.message);
+      setError("Google Sign-in failed!");
     }
   };
 
   return (
     <div className="login-container">
 
-      {/* LEFT PANEL */}
+      {/* ================= LEFT PANEL ================= */}
       <div
         className="left-panel"
         style={{ backgroundImage: `url(${cityImage})` }}
@@ -101,6 +96,7 @@ function Login() {
               <h3>24/7</h3>
               <p>Citizen Service Access</p>
             </div>
+
             <div className="stat-card">
               <h3>98%</h3>
               <p>Issue Resolution Rate</p>
@@ -109,8 +105,12 @@ function Login() {
         </div>
       </div>
 
-      {/* RIGHT PANEL */}
+      {/* ================= RIGHT PANEL ================= */}
       <div className="right-panel">
+
+        {/* 🔥 Animated Scan Line (for premium CSS) */}
+        <div className="scan-line"></div>
+
         <h2>Welcome Back</h2>
         <p>Please sign in to continue</p>
 
@@ -157,7 +157,7 @@ function Login() {
               backgroundColor: "#ffffff",
               color: "#444",
               padding: "10px",
-              width: "100%",
+              width: "300px",
               border: "1px solid #dadce0",
               borderRadius: "6px",
               cursor: "pointer",
@@ -183,7 +183,7 @@ function Login() {
             New user?{" "}
             <span
               style={{
-                color: "#2563eb",
+                color: "#38bdf8",
                 cursor: "pointer",
                 fontWeight: "600"
               }}
@@ -193,6 +193,7 @@ function Login() {
             </span>
           </p>
         )}
+
       </div>
     </div>
   );

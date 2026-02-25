@@ -1,29 +1,65 @@
 import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import "./SuccessScreen.css";
+import { useNavigate } from "react-router-dom";
+import confetti from "canvas-confetti";
 
 function SuccessScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const message = location.state?.message || "Welcome 👋";
 
   useEffect(() => {
+    // Fireworks function
+    const duration = 3000;
+    const end = Date.now() + duration;
+
+    const colors = ["#ff0000", "#00ffff", "#ffcc00", "#00ff00", "#ff00ff"];
+
+    (function frame() {
+      confetti({
+        particleCount: 7,
+        angle: 60,
+        spread: 120,
+        origin: { x: 0 },
+        colors
+      });
+      confetti({
+        particleCount: 7,
+        angle: 120,
+        spread: 120,
+        origin: { x: 1 },
+        colors
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+
+    // Redirect after 3 seconds
     const timer = setTimeout(() => {
       navigate("/user");
-    }, 2500); // 2.5 seconds
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
-    <div className="success-container">
-      <div className="checkmark-circle">
-        <div className="checkmark"></div>
-      </div>
+    <div
+      style={{
+        height: "100vh",
+        background: "#000000",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        color: "white"
+      }}
+    >
+      <h1 style={{ fontSize: "48px", fontWeight: "bold" }}>
+        🎉 Login Successful!
+      </h1>
 
-      <h1 className="success-text">{message}</h1>
-      <p className="redirect-text">Redirecting to dashboard...</p>
+      <p style={{ marginTop: "15px", fontSize: "20px" }}>
+        Welcome to Smart City 🚀
+      </p>
     </div>
   );
 }

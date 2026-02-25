@@ -58,43 +58,83 @@
   min-width: 120px;
 }
 
-.stat-card h3 {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.stat-card p {
-  font-size: 14px;
-}
-
 .stat-card:hover {
   transform: translateY(-5px);
 }
 
-/* ================= RIGHT PANEL ================= */
+/* ================= RIGHT PANEL PREMIUM ================= */
 .right-panel {
   flex: 1;
-  background: #f3f4f6;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #020617);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px;
+  color: white;
 }
 
+/* DIGITAL MOVING GRID */
+.right-panel::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(rgba(0,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.06) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: moveGrid 30s linear infinite;
+  z-index: 0;
+}
+
+/* FLOATING PARTICLES */
+.right-panel::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(rgba(56,189,248,0.4) 2px, transparent 2px),
+    radial-gradient(rgba(255,255,255,0.2) 1px, transparent 1px);
+  background-size: 120px 120px, 80px 80px;
+  animation: floatParticles 40s linear infinite;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+/* SCANNING LIGHT EFFECT */
+.right-panel .scan-line {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+  top: 0;
+  animation: scanMove 5s linear infinite;
+  z-index: 1;
+}
+
+/* Bring content above animation */
+.right-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* HEADINGS */
 .right-panel h2 {
-  font-size: 28px;
+  font-size: 30px;
   margin-bottom: 5px;
   font-weight: bold;
 }
 
 .right-panel p {
   margin-bottom: 20px;
-  color: #555;
+  color: #cbd5e1;
 }
 
-/* ================= ROLE BUTTONS ================= */
+/* ROLE BUTTONS */
 .role-selection {
   display: flex;
   gap: 10px;
@@ -103,80 +143,89 @@
 
 .role-selection button {
   padding: 8px 15px;
-  border: 1px solid #2563eb;
-  background: white;
+  border: 1px solid #38bdf8;
+  background: rgba(255,255,255,0.05);
+  color: white;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   transition: 0.3s;
 }
 
 .role-selection button:hover {
-  background: #2563eb;
-  color: white;
+  background: #38bdf8;
+  color: black;
 }
 
 .role-selection .active {
-  background: #2563eb;
-  color: white;
+  background: #38bdf8;
+  color: black;
 }
 
-/* ================= FORM ================= */
+/* GLASS FORM */
 .right-panel form {
   display: flex;
   flex-direction: column;
   width: 300px;
+  backdrop-filter: blur(15px);
 }
 
 .right-panel input {
   padding: 12px;
   margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: white;
   transition: 0.3s;
 }
 
 .right-panel input:focus {
-  border-color: #2563eb;
+  border-color: #38bdf8;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 0 15px rgba(56,189,248,0.5);
 }
 
+/* PREMIUM BUTTON */
 .right-panel button[type="submit"] {
   padding: 12px;
-  background-color: #2563eb;
-  color: white;
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+  color: black;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
   font-weight: bold;
 }
 
 .right-panel button[type="submit"]:hover {
-  background-color: #1d4ed8;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(56,189,248,0.6);
 }
 
-/* ================= RESPONSIVE DESIGN ================= */
+/* ================= ANIMATIONS ================= */
+@keyframes moveGrid {
+  0% { transform: translate(0,0); }
+  100% { transform: translate(-300px,-300px); }
+}
+
+@keyframes floatParticles {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 400px 400px, -300px -300px; }
+}
+
+@keyframes scanMove {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .login-container {
     flex-direction: column;
   }
-
-  .left-panel {
-    height: 40vh;
-  }
-
-  .overlay {
-    padding: 40px;
-  }
-
-  .right-panel {
-    height: 60vh;
-  }
-}
-
-/* ================= FADE ANIMATION ================= */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
