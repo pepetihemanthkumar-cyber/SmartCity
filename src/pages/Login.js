@@ -19,18 +19,25 @@ function Login() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    // ADMIN LOGIN
+    // 👑 ADMIN LOGIN
     if (role === "admin") {
       if (email === "admin@gmail.in" && password === "admin123") {
+
+        localStorage.setItem("adminLoggedIn", "true"); // ✅ store admin login
+        localStorage.removeItem("userLoggedIn");
+
         setError("");
-        navigate("/admin");
+        navigate("/success", {
+          state: { message: "Welcome Admin 👑" }
+        });
+
       } else {
         setError("Invalid Admin credentials!");
       }
       return;
     }
 
-    // USER LOGIN
+    // 👤 USER LOGIN
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (
@@ -38,8 +45,15 @@ function Login() {
       storedUser.email === email &&
       storedUser.password === password
     ) {
+
+      localStorage.setItem("userLoggedIn", "true"); // ✅ store user login
+      localStorage.removeItem("adminLoggedIn");
+
       setError("");
-      navigate("/user");
+      navigate("/success", {
+        state: { message: "Welcome Back 👋" }
+      });
+
     } else {
       setError("Invalid User credentials!");
     }
@@ -52,8 +66,15 @@ function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       console.log("Google User:", result.user);
+
+      localStorage.setItem("userLoggedIn", "true"); // ✅ store login
+      localStorage.removeItem("adminLoggedIn");
+
       setError("");
-      navigate("/user");
+      navigate("/success", {
+        state: { message: "Welcome Back 👋" }
+      });
+
     } catch (err) {
       console.error("Google Error:", err.code);
       setError(err.message);
@@ -70,7 +91,6 @@ function Login() {
       >
         <div className="overlay">
           <h1>Civic Nexus</h1>
-
           <p>
             A Smart Digital Governance Platform empowering citizens
             with seamless city services and real-time solutions.
@@ -81,7 +101,6 @@ function Login() {
               <h3>24/7</h3>
               <p>Citizen Service Access</p>
             </div>
-
             <div className="stat-card">
               <h3>98%</h3>
               <p>Issue Resolution Rate</p>
@@ -116,19 +135,8 @@ function Login() {
 
         {/* LOGIN FORM */}
         <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
 
           {error && (
             <p style={{ color: "red", marginBottom: "10px", fontSize: "14px" }}>
@@ -139,7 +147,7 @@ function Login() {
           <button type="submit">Sign In</button>
         </form>
 
-        {/* GOOGLE BUTTON (Only for User) */}
+        {/* GOOGLE BUTTON */}
         {role === "user" && (
           <button
             type="button"

@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import Register from "./pages/Register";   // ✅ Import Register
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Contact from "./pages/Contact";
+import SuccessScreen from "./pages/SuccessScreen";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -14,9 +16,28 @@ function App() {
       {/* Register Page */}
       <Route path="/register" element={<Register />} />
 
-      {/* User & Admin Dashboard */}
-      <Route path="/user" element={<Dashboard />} />
-      <Route path="/admin" element={<Dashboard />} />
+      {/* Success Animation Page */}
+      <Route path="/success" element={<SuccessScreen />} />
+
+      {/* Protected USER Dashboard */}
+      <Route
+        path="/user"
+        element={
+          <ProtectedRoute role="user">
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Protected ADMIN Dashboard */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute role="admin">
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Contact Page */}
       <Route path="/contact" element={<Contact />} />
