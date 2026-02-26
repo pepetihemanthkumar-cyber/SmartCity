@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, provider } from "../firebase";
-import { signInWithPopup } from "firebase/auth";
+import {
+  signInWithRedirect,
+  getRedirectResult
+} from "firebase/auth";
 import "./Login.css";
 import cityImage from "../assets/city.jpg";
 
@@ -10,22 +13,43 @@ function Login() {
   const [role, setRole] = useState("user");
   const [error, setError] = useState("");
 
-  // ===============================
-  // 🔐 NORMAL LOGIN
-  // ===============================
+  /* ===============================
+     HANDLE GOOGLE REDIRECT RESULT
+  =============================== */
+  useEffect(() => {
+    const checkRedirect = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          localStorage.setItem("userLoggedIn", "true");
+          localStorage.removeItem("adminLoggedIn");
+
+          navigate("/success", {
+            state: { message: "Welcome Back 👋" }
+          });
+        }
+      } catch (err) {
+        console.error("Redirect Error:", err);
+      }
+    };
+
+    checkRedirect();
+  }, [navigate]);
+
+  /* ===============================
+     NORMAL LOGIN
+  =============================== */
   const handleLogin = (e) => {
     e.preventDefault();
 
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    // 👑 ADMIN LOGIN
     if (role === "admin") {
       if (email === "admin@gmail.in" && password === "admin123") {
         localStorage.setItem("adminLoggedIn", "true");
         localStorage.removeItem("userLoggedIn");
 
-        setError("");
         navigate("/success", {
           state: { message: "Welcome Admin 👑" }
         });
@@ -35,7 +59,6 @@ function Login() {
       return;
     }
 
-    // 👤 USER LOGIN
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (
@@ -46,7 +69,6 @@ function Login() {
       localStorage.setItem("userLoggedIn", "true");
       localStorage.removeItem("adminLoggedIn");
 
-      setError("");
       navigate("/success", {
         state: { message: "Welcome Back 👋" }
       });
@@ -55,23 +77,14 @@ function Login() {
     }
   };
 
-  // ===============================
-  // 🔵 GOOGLE LOGIN
-  // ===============================
+  /* ===============================
+     GOOGLE LOGIN (REDIRECT SAFE)
+  =============================== */
   const handleGoogleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
-      console.log("Google User:", result.user);
-
-      localStorage.setItem("userLoggedIn", "true");
-      localStorage.removeItem("adminLoggedIn");
-
-      setError("");
-      navigate("/success", {
-        state: { message: "Welcome Back 👋" }
-      });
+      await signInWithRedirect(auth, provider);
     } catch (err) {
-      console.error("Google Error:", err.code);
+      console.error("Google Error:", err);
       setError("Google Sign-in failed!");
     }
   };
@@ -79,7 +92,7 @@ function Login() {
   return (
     <div className="login-container">
 
-      {/* ================= LEFT PANEL ================= */}
+      {/* LEFT PANEL */}
       <div
         className="left-panel"
         style={{ backgroundImage: `url(${cityImage})` }}
@@ -105,10 +118,8 @@ function Login() {
         </div>
       </div>
 
-      {/* ================= RIGHT PANEL ================= */}
+      {/* RIGHT PANEL */}
       <div className="right-panel">
-
-        {/* 🔥 Animated Scan Line (for premium CSS) */}
         <div className="scan-line"></div>
 
         <h2>Welcome Back</h2>
@@ -139,7 +150,7 @@ function Login() {
           <input type="password" name="password" placeholder="Password" required />
 
           {error && (
-            <p style={{ color: "red", marginBottom: "10px", fontSize: "14px" }}>
+            <p style={{ color: "red", marginBottom: "10px" }}>
               {error}
             </p>
           )}
@@ -147,26 +158,12 @@ function Login() {
           <button type="submit">Sign In</button>
         </form>
 
-        {/* GOOGLE BUTTON */}
+        {/* GOOGLE LOGIN */}
         {role === "user" && (
           <button
             type="button"
             onClick={handleGoogleLogin}
-            style={{
-              marginTop: "15px",
-              backgroundColor: "#ffffff",
-              color: "#444",
-              padding: "10px",
-              width: "300px",
-              border: "1px solid #dadce0",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontWeight: "500",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px"
-            }}
+            className="google-btn"
           >
             <img
               src="https://developers.google.com/identity/images/g-logo.png"
@@ -177,23 +174,18 @@ function Login() {
           </button>
         )}
 
-        {/* CREATE ACCOUNT */}
+        {/* REGISTER LINK */}
         {role === "user" && (
           <p style={{ marginTop: "15px", fontSize: "14px" }}>
             New user?{" "}
             <span
-              style={{
-                color: "#38bdf8",
-                cursor: "pointer",
-                fontWeight: "600"
-              }}
+              style={{ color: "#38bdf8", cursor: "pointer", fontWeight: "600" }}
               onClick={() => navigate("/register")}
             >
               Create an Account
             </span>
           </p>
         )}
-
       </div>
     </div>
   );
