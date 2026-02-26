@@ -1,15 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as THREE from "three";
-import BIRDS from "vanta/dist/vanta.birds.min";
+import CountUp from "react-countup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Dashboard.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
-  const heroRef = useRef(null);
-  const vantaRef = useRef(null);
   const navigate = useNavigate();
 
   /* ================= STATES ================= */
@@ -22,7 +19,6 @@ function Dashboard() {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
-  const [notifications, setNotifications] = useState([]);
 
   /* ================= DARK MODE ================= */
   useEffect(() => {
@@ -49,26 +45,7 @@ function Dashboard() {
     localStorage.setItem("userFeedback", JSON.stringify(feedbackList));
   }, [feedbackList]);
 
-  /* ================= VANTA BACKGROUND ================= */
-  useEffect(() => {
-    if (!vantaRef.current && heroRef.current) {
-      vantaRef.current = BIRDS({
-        el: heroRef.current,
-        THREE,
-        mouseControls: true,
-        touchControls: true,
-        backgroundColor: 0x07192f,
-        color1: 0xff0000,
-        color2: 0x00ffff,
-        quantity: 6
-      });
-    }
-    return () => {
-      if (vantaRef.current) vantaRef.current.destroy();
-    };
-  }, []);
-
-  /* ================= STATISTICS ================= */
+  /* ================= STATS ================= */
   const totalIssues = issues.length;
   const pendingIssues = issues.filter(i => i.status === "Pending").length;
   const resolvedIssues = issues.filter(i => i.status === "Resolved").length;
@@ -82,13 +59,6 @@ function Dashboard() {
         ).toFixed(1);
 
   /* ================= FUNCTIONS ================= */
-
-  const addNotification = (message) => {
-    setNotifications(prev => [
-      ...prev,
-      { id: Date.now(), text: message }
-    ]);
-  };
 
   const handleSubmitIssue = (e) => {
     e.preventDefault();
@@ -104,13 +74,12 @@ function Dashboard() {
 
     setIssues([...issues, newIssue]);
     setIssueText("");
-    toast.success("Issue submitted!");
-    addNotification("New issue submitted.");
+    toast.success("Issue submitted successfully!");
   };
 
   const handleFeedbackSubmit = () => {
     if (!feedbackText.trim() || rating === 0) {
-      toast.error("Please give rating & feedback");
+      toast.error("Please provide rating & feedback");
       return;
     }
 
@@ -119,7 +88,6 @@ function Dashboard() {
     setFeedbackText("");
     setRating(0);
     toast.success("Feedback submitted!");
-    addNotification("Feedback submitted.");
   };
 
   const handleLogout = () => {
@@ -129,165 +97,139 @@ function Dashboard() {
 
   /* ================= UI ================= */
   return (
-    <>
-      {/* NAVBAR */}
-      <nav className="navbar navbar-dark fixed-top bg-dark px-4 d-flex justify-content-between">
+    <div className="dashboard-layout">
 
-        <span className="navbar-brand fw-bold">Civic Nexus</span>
+      {/* SIDEBAR */}
+      <div className="sidebar">
+        <h3 className="logo">Civic Nexus</h3>
 
-        <div className="d-flex align-items-center gap-3">
-
-          {/* DARK MODE */}
-          <button
-            className="btn btn-sm btn-outline-light"
+        <div className="sidebar-menu">
+          <div className="menu-item">🏠 Dashboard</div>
+          <div className="menu-item">📌 My Issues</div>
+          <div className="menu-item">⭐ Feedback</div>
+          <div 
+            className="menu-item"
             onClick={() => setDarkMode(!darkMode)}
           >
-            {darkMode ? "☀" : "🌙"}
-          </button>
-
-          {/* NOTIFICATION */}
-          <div className="position-relative">
-            <span style={{ fontSize: "22px", cursor: "pointer" }}>
-              🔔
-            </span>
-            {notifications.length > 0 && (
-              <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                {notifications.length}
-              </span>
-            )}
+            {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
           </div>
-
-          <button className="btn btn-danger btn-sm" onClick={handleLogout}>
-            Logout
-          </button>
-
+          <div 
+            className="menu-item text-danger"
+            onClick={handleLogout}
+          >
+            🚪 Logout
+          </div>
         </div>
-      </nav>
+      </div>
 
-      {/* HERO */}
-      <section className="hero mt-5 pt-5" ref={heroRef}>
-        <div className="hero-content text-center text-white">
-          <h1>Smart City Dashboard</h1>
-        </div>
-      </section>
+      {/* MAIN CONTENT */}
+      <div className="main-content">
 
-      <div className="container mt-5">
+        <h2 className="mb-4">User Dashboard</h2>
 
-        {/* STAT CARDS */}
+        {/* ================= STAT CARDS ================= */}
         <div className="row mb-5 text-center">
           <div className="col-md-3 mb-3">
-            <div className="card p-3 shadow">
-              <h4>📌 {totalIssues}</h4>
-              <small>Total Issues</small>
+            <div className="glass-stat-card">
+              <h5>Total Issues</h5>
+              <h2><CountUp end={totalIssues} duration={1.5} /></h2>
             </div>
           </div>
+
           <div className="col-md-3 mb-3">
-            <div className="card p-3 shadow">
-              <h4>🟡 {pendingIssues}</h4>
-              <small>Pending</small>
+            <div className="glass-stat-card">
+              <h5>Pending</h5>
+              <h2 style={{ color: "#facc15" }}>
+                <CountUp end={pendingIssues} duration={1.5} />
+              </h2>
             </div>
           </div>
+
           <div className="col-md-3 mb-3">
-            <div className="card p-3 shadow">
-              <h4>🟢 {resolvedIssues}</h4>
-              <small>Resolved</small>
+            <div className="glass-stat-card">
+              <h5>Resolved</h5>
+              <h2 style={{ color: "#22c55e" }}>
+                <CountUp end={resolvedIssues} duration={1.5} />
+              </h2>
             </div>
           </div>
+
           <div className="col-md-3 mb-3">
-            <div className="card p-3 shadow">
-              <h4>⭐ {averageRating}</h4>
-              <small>Average Rating</small>
+            <div className="glass-stat-card">
+              <h5>Avg Rating</h5>
+              <h2>⭐ {averageRating}</h2>
             </div>
           </div>
         </div>
 
-        {/* SUBMIT ISSUE */}
-        <form onSubmit={handleSubmitIssue} className="mb-4">
-          <select
-            className="form-select mb-2"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option>Road Issue</option>
-            <option>Water Issue</option>
-            <option>Electricity Issue</option>
-            <option>Garbage Issue</option>
-          </select>
+        {/* ================= SUBMIT ISSUE ================= */}
+        <div className="glass-stat-card mb-4">
+          <h5 className="mb-3">Submit New Issue</h5>
+          <form onSubmit={handleSubmitIssue}>
+            <select
+              className="form-select mb-2"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option>Road Issue</option>
+              <option>Water Issue</option>
+              <option>Electricity Issue</option>
+              <option>Garbage Issue</option>
+            </select>
 
-          <input
-            type="text"
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Describe issue..."
+              value={issueText}
+              onChange={(e) => setIssueText(e.target.value)}
+            />
+
+            <button className="btn btn-primary">
+              Submit Issue
+            </button>
+          </form>
+        </div>
+
+        {/* ================= FEEDBACK ================= */}
+        <div className="glass-stat-card">
+          <h5 className="mb-3">Submit Feedback</h5>
+
+          <div className="mb-2">
+            {[1,2,3,4,5].map((star) => (
+              <span
+                key={star}
+                style={{
+                  fontSize: "26px",
+                  cursor: "pointer",
+                  color: star <= rating ? "#ffc107" : "#ccc"
+                }}
+                onClick={() => setRating(star)}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+
+          <textarea
             className="form-control mb-2"
-            placeholder="Describe issue..."
-            value={issueText}
-            onChange={(e) => setIssueText(e.target.value)}
+            placeholder="Write feedback..."
+            value={feedbackText}
+            onChange={(e) => setFeedbackText(e.target.value)}
           />
 
-          <button className="btn btn-primary">Submit Issue</button>
-        </form>
-
-        {/* FEEDBACK */}
-        <h4 className="mt-5">Feedback</h4>
-
-        <div className="mb-2">
-          {[1,2,3,4,5].map((star) => (
-            <span
-              key={star}
-              style={{
-                fontSize: "28px",
-                cursor: "pointer",
-                color: star <= rating ? "#ffc107" : "#ccc"
-              }}
-              onClick={() => setRating(star)}
-            >
-              ★
-            </span>
-          ))}
+          <button
+            className="btn btn-success"
+            onClick={handleFeedbackSubmit}
+          >
+            Submit Feedback
+          </button>
         </div>
-
-        <textarea
-          className="form-control mb-2"
-          placeholder="Write feedback..."
-          value={feedbackText}
-          onChange={(e) => setFeedbackText(e.target.value)}
-        />
-
-        <button
-          className="btn btn-success mb-4"
-          onClick={handleFeedbackSubmit}
-        >
-          Submit Feedback
-        </button>
 
       </div>
 
-      {/* FOOTER */}
-      {/* FOOTER */}
-<footer className="footer-section mt-5">
-  <div className="container text-center text-white py-4">
-
-    <p className="fw-bold">A Project by :</p>
-    <p>
-      2400030935 (P. Hemanth Kumar) & 2400030302 (K. Chiranjith Sai)
-    </p>
-
-    <div className="footer-links mt-3">
-      <span onClick={() => navigate("/contact")}>
-        Contact
-      </span>
-
-      <span onClick={() => navigate("/about")}>
-        About Project
-      </span>
-
-      <span onClick={() => navigate("/help")}>
-        Help Center
-      </span>
-    </div>
-
-  </div>
-</footer>
       <ToastContainer position="top-right" autoClose={2000} />
-    </>
+    </div>
   );
 }
 

@@ -6,123 +6,85 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ================= NAVBAR ================= */
-.navbar {
-  background: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(10px);
-  z-index: 1000;
-  padding: 18px 20px;
-}
+/* ================= DASHBOARD LAYOUT ================= */
 
-/* ================= HERO SECTION ================= */
-.hero {
-  position: relative;
-  height: 100vh;
+.dashboard-layout {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
-.hero canvas {
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  z-index: 0 !important;
-}
+/* ================= SIDEBAR ================= */
 
-.hero-content {
-  position: relative;
-  z-index: 2;
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #0f172a, #1e293b);
   color: white;
-  text-align: center;
-  animation: fadeInUp 1.2s ease;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.1);
 }
 
-.hero h1 {
-  font-size: 70px;
+.logo {
   font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
 }
 
-/* ================= ANIMATION ================= */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ================= STAT CARDS ================= */
-.stat-card {
-  border-radius: 20px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-}
-
-.stat-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  background: linear-gradient(135deg, #ffffff, #eef5ff);
-}
-
-/* ================= CARD EFFECT ================= */
-.card {
-  border-radius: 20px !important;
-  transition: 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* ================= TABLE ================= */
-.table {
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.table tbody tr:hover {
-  background-color: #f1f5f9;
-  transition: 0.3s ease;
-}
-
-/* ================= FOOTER ================= */
-.footer-section {
-  background: #07192f;
-  color: white;
-  padding: 30px 0;
-  font-size: 14px;
-}
-
-.footer-links {
+.sidebar-menu {
   display: flex;
-  gap: 40px;
-  font-size: 15px;
-  font-weight: 500;
-  justify-content: center;
-  margin-top: 10px;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.footer-links span {
+.menu-item {
   cursor: pointer;
-  transition: 0.3s ease;
-  color: white;
+  padding: 12px 14px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  font-size: 15px;
 }
 
-.footer-links span:hover {
-  color: #00ffff;
-  transform: translateY(-2px);
+.menu-item:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateX(6px);
+}
+
+.menu-item.text-danger:hover {
+  background: rgba(255,0,0,0.15);
+}
+
+/* ================= MAIN CONTENT ================= */
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* ================= GLASS STAT CARDS ================= */
+
+.glass-stat-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.glass-stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
 /* ================= BUTTON EFFECTS ================= */
+
 .btn {
-  border-radius: 10px !important;
+  border-radius: 12px !important;
   transition: 0.3s ease;
+  font-weight: 500;
 }
 
 .btn-primary:hover,
@@ -132,6 +94,7 @@ body {
 }
 
 /* ================= FORM CONTROLS ================= */
+
 .form-control,
 .form-select {
   border-radius: 12px !important;
@@ -145,19 +108,22 @@ body {
   border-color: #2563eb;
 }
 
-/* ================= NOTIFICATION BADGE ================= */
-.badge {
-  font-size: 10px;
-  padding: 5px 7px;
-}
-
 /* ================= DARK MODE ================= */
+
 .dark-mode {
   background: #0f172a !important;
   color: white !important;
 }
 
-.dark-mode .card,
+.dark-mode .main-content {
+  background: #0f172a;
+}
+
+.dark-mode .glass-stat-card {
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
 .dark-mode .form-control,
 .dark-mode .form-select {
   background: #1e293b !important;
@@ -165,36 +131,42 @@ body {
   border: 1px solid #334155;
 }
 
-.dark-mode .navbar {
-  background: #020617 !important;
-}
-
-.dark-mode .footer-section {
-  background: #020617 !important;
-}
-
-.dark-mode .table tbody tr:hover {
-  background: #1e293b;
+.dark-mode .sidebar {
+  background: linear-gradient(180deg, #020617, #0f172a);
 }
 
 /* ================= MOBILE OPTIMIZATION ================= */
+
+@media (max-width: 992px) {
+  .sidebar {
+    width: 200px;
+    padding: 20px 15px;
+  }
+}
+
 @media (max-width: 768px) {
-
-  .hero h1 {
-    font-size: 40px;
-  }
-
-  .stat-card {
-    margin-bottom: 15px;
-  }
-
-  .footer-links {
+  .dashboard-layout {
     flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 15px;
+  }
+
+  .sidebar-menu {
+    flex-direction: row;
     gap: 10px;
   }
 
-  .navbar {
-    padding: 12px;
+  .menu-item {
+    font-size: 13px;
+    padding: 8px;
   }
 
+  .main-content {
+    padding: 20px;
+  }
 }
