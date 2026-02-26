@@ -1,20 +1,47 @@
 /* ================= GLOBAL RESET ================= */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: #f4f7fb;
   transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* ================= VANTA BACKGROUND ================= */
+.vanta-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+/* Dark cinematic overlay */
+.dashboard-layout::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15,23,42,0.85),
+    rgba(30,41,59,0.85)
+  );
+  z-index: -1;
 }
 
 /* ================= DASHBOARD LAYOUT ================= */
-
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
+  position: relative;
 }
 
 /* ================= SIDEBAR ================= */
-
 .sidebar {
   width: 260px;
   background: linear-gradient(180deg, #0f172a, #1e293b);
@@ -22,7 +49,9 @@ body {
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+  box-shadow: 4px 0 25px rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+  z-index: 2;
 }
 
 .logo {
@@ -47,103 +76,206 @@ body {
 }
 
 .menu-item:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.12);
   transform: translateX(6px);
 }
 
 .menu-item.text-danger:hover {
-  background: rgba(255,0,0,0.15);
+  background: rgba(255,0,0,0.25);
 }
 
 /* ================= MAIN CONTENT ================= */
-
 .main-content {
   flex: 1;
   padding: 40px;
   overflow-y: auto;
+  position: relative;
+  z-index: 2;
 }
 
-/* ================= GLASS STAT CARDS ================= */
-
+/* ================= GLASS CARDS ================= */
 .glass-stat-card {
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(20px);
   border-radius: 20px;
   padding: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.2);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.5);
+  animation: fadeInUp 0.8s ease;
 }
 
 .glass-stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.35);
 }
 
-/* ================= BUTTON EFFECTS ================= */
+/* ================= SUBMIT FORM ================= */
+.submit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
-.btn {
-  border-radius: 12px !important;
+.submit-form textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+.submit-btn {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
   transition: 0.3s ease;
-  font-weight: 500;
 }
 
-.btn-primary:hover,
-.btn-success:hover,
-.btn-danger:hover {
+.submit-btn:hover {
   transform: scale(1.05);
+  background: linear-gradient(90deg, #1d4ed8, #1e40af);
 }
 
-/* ================= FORM CONTROLS ================= */
+/* ================= SEARCH BAR ================= */
+.search-bar {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  margin-bottom: 20px;
+}
 
-.form-control,
-.form-select {
-  border-radius: 12px !important;
-  padding: 10px;
+/* ================= REPORT TABLE ================= */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.report-table th {
+  padding: 14px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-weight: 600;
+}
+
+.report-table td {
+  padding: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+
+.report-row {
+  transition: all 0.3s ease;
+}
+
+.report-row:hover {
+  transform: scale(1.02);
+  background: rgba(255,255,255,0.08);
+}
+
+/* ================= STATUS BADGES ================= */
+.badge-pending {
+  background: #facc15;
+  color: black;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.badge-progress {
+  background: #3b82f6;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: white;
+}
+
+.badge-resolved {
+  background: #22c55e;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: white;
+}
+
+/* ================= PROGRESS BAR ================= */
+.progress-bar-container {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.8s ease-in-out;
+}
+
+.progress-25 {
+  width: 25%;
+  background: linear-gradient(90deg, #facc15, #f59e0b);
+}
+
+.progress-60 {
+  width: 60%;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.progress-100 {
+  width: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+/* ================= DELETE BUTTON ================= */
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
   transition: 0.3s ease;
 }
 
-.form-control:focus,
-.form-select:focus {
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-  border-color: #2563eb;
+.delete-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+/* ================= FADE IN ANIMATION ================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ================= DARK MODE ================= */
-
 .dark-mode {
   background: #0f172a !important;
   color: white !important;
 }
 
-.dark-mode .main-content {
-  background: #0f172a;
-}
-
 .dark-mode .glass-stat-card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.06);
   color: white;
-}
-
-.dark-mode .form-control,
-.dark-mode .form-select {
-  background: #1e293b !important;
-  color: white !important;
-  border: 1px solid #334155;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .dark-mode .sidebar {
   background: linear-gradient(180deg, #020617, #0f172a);
 }
 
-/* ================= MOBILE OPTIMIZATION ================= */
-
-@media (max-width: 992px) {
-  .sidebar {
-    width: 200px;
-    padding: 20px 15px;
-  }
-}
-
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
   .dashboard-layout {
     flex-direction: column;
@@ -153,17 +285,11 @@ body {
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
-    padding: 15px;
   }
 
   .sidebar-menu {
     flex-direction: row;
     gap: 10px;
-  }
-
-  .menu-item {
-    font-size: 13px;
-    padding: 8px;
   }
 
   .main-content {

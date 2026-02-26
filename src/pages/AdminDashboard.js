@@ -40,10 +40,13 @@ function AdminDashboard() {
     setFeedbackList(JSON.parse(localStorage.getItem("userFeedback")) || []);
   }, []);
 
-  /* ================= FILTER ================= */
+  /* ================= SAFE FILTER ================= */
   const filteredIssues = issues.filter(issue => {
+    const search = searchTerm.toLowerCase();
+
     const matchesSearch =
-      issue.text.toLowerCase().includes(searchTerm.toLowerCase());
+      (issue.category || "").toLowerCase().includes(search) ||
+      (issue.description || "").toLowerCase().includes(search);
 
     const matchesStatus =
       statusFilter === "All" || issue.status === statusFilter;
@@ -151,7 +154,7 @@ function AdminDashboard() {
         <section className="glass-card">
           <h4>🛠 Manage User Issues</h4>
 
-          {/* SEARCH */}
+          {/* SEARCH & FILTER */}
           <div style={{ display: "flex", gap: "15px", marginBottom: "20px" }}>
             <input
               type="text"
@@ -195,8 +198,8 @@ function AdminDashboard() {
                 filteredIssues.map(issue => (
                   <tr key={issue.id}>
                     <td>#{issue.id}</td>
-                    <td>{issue.category}</td>
-                    <td>{issue.text}</td>
+                    <td>{issue.category || "-"}</td>
+                    <td>{issue.description || "-"}</td>
 
                     <td>
                       <select
@@ -223,7 +226,7 @@ function AdminDashboard() {
                       )}
                     </td>
 
-                    <td>{issue.date}</td>
+                    <td>{issue.date || "-"}</td>
 
                     <td>
                       <button

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 /* ================= PAGES ================= */
 import Login from "./pages/Login";
@@ -6,8 +6,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Contact from "./pages/Contact";
-import About from "./pages/About";      // ✅ ADD THIS
-import Help from "./pages/Help";        // ✅ ADD THIS
+import About from "./pages/About";
+import Help from "./pages/Help";
 import SuccessScreen from "./pages/SuccessScreen";
 import ServiceDetail from "./pages/ServiceDetail";
 import IssueDetail from "./pages/IssueDetail";
@@ -24,10 +24,10 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/success" element={<SuccessScreen />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/about" element={<About />} />   {/* ✅ NEW */}
-      <Route path="/help" element={<Help />} />     {/* ✅ NEW */}
+      <Route path="/about" element={<About />} />
+      <Route path="/help" element={<Help />} />
 
-      {/* ================= USER DASHBOARD ================= */}
+      {/* ================= USER ROUTES ================= */}
       <Route
         path="/user"
         element={
@@ -37,7 +37,6 @@ function App() {
         }
       />
 
-      {/* ================= SERVICE DETAIL ================= */}
       <Route
         path="/service/:name"
         element={
@@ -47,7 +46,6 @@ function App() {
         }
       />
 
-      {/* ================= ISSUE DETAIL ================= */}
       <Route
         path="/issue/:id"
         element={
@@ -57,7 +55,7 @@ function App() {
         }
       />
 
-      {/* ================= ADMIN DASHBOARD ================= */}
+      {/* ================= ADMIN ROUTES ================= */}
       <Route
         path="/admin"
         element={
@@ -66,6 +64,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* ================= 404 PAGE ================= */}
+      <Route path="*" element={<Navigate to="/" />} />
 
     </Routes>
   );
