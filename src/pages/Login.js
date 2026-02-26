@@ -17,10 +17,13 @@ function Login() {
      HANDLE GOOGLE REDIRECT RESULT
   =============================== */
   useEffect(() => {
-    const checkRedirect = async () => {
+    const handleRedirectResult = async () => {
       try {
         const result = await getRedirectResult(auth);
-        if (result) {
+
+        if (result && result.user) {
+          console.log("Google User:", result.user);
+
           localStorage.setItem("userLoggedIn", "true");
           localStorage.removeItem("adminLoggedIn");
 
@@ -29,11 +32,12 @@ function Login() {
           });
         }
       } catch (err) {
-        console.error("Redirect Error:", err);
+        console.error("Redirect FULL ERROR:", err);
+        setError(err.message);
       }
     };
 
-    checkRedirect();
+    handleRedirectResult();
   }, [navigate]);
 
   /* ===============================
@@ -45,6 +49,7 @@ function Login() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
+    // ADMIN LOGIN
     if (role === "admin") {
       if (email === "admin@gmail.in" && password === "admin123") {
         localStorage.setItem("adminLoggedIn", "true");
@@ -59,6 +64,7 @@ function Login() {
       return;
     }
 
+    // USER LOGIN
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (
@@ -78,14 +84,15 @@ function Login() {
   };
 
   /* ===============================
-     GOOGLE LOGIN (REDIRECT SAFE)
+     GOOGLE LOGIN (SAFE REDIRECT)
   =============================== */
   const handleGoogleLogin = async () => {
     try {
+      setError("");
       await signInWithRedirect(auth, provider);
     } catch (err) {
       console.error("Google Error:", err);
-      setError("Google Sign-in failed!");
+      setError(err.message);
     }
   };
 
