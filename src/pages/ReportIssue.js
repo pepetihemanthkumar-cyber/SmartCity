@@ -10,6 +10,9 @@ function ReportIssue() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  // ✅ NEW CATEGORY STATE
+  const [category, setCategory] = useState("Road");
+
   const [locationName, setLocationName] = useState("");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
@@ -89,7 +92,7 @@ function ReportIssue() {
     const newIssue = {
       title,
       description,
-      category: "General",
+      category, // ✅ NOW DYNAMIC
       locationName,
       lat: parseFloat(lat),
       lng: parseFloat(lng),
@@ -100,7 +103,7 @@ function ReportIssue() {
 
     alert("✅ Issue Submitted!");
 
-    navigate("/dashboard"); // 🔥 redirect
+    navigate("/dashboard");
   };
 
   return (
@@ -125,6 +128,18 @@ function ReportIssue() {
           onChange={(e) => setDescription(e.target.value)}
           style={{ ...input, height: "120px" }}
         />
+
+        {/* ✅ CATEGORY SELECT */}
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          style={input}
+        >
+          <option value="Road">Road Damage</option>
+          <option value="Garbage">Garbage</option>
+          <option value="Water">Water Leakage</option>
+          <option value="Light">Street Light</option>
+        </select>
 
         {/* ================= LOCATION ================= */}
         <div style={locationBox}>
@@ -153,18 +168,14 @@ function ReportIssue() {
           {/* COORDINATES */}
           <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
 
-            {/* LAT */}
             <input
               placeholder="Latitude"
               value={lat}
               onChange={(e) => {
-                let value = e.target.value;
-                value = value.replace(/[^\d.-]/g, "");
-
+                let value = e.target.value.replace(/[^\d.-]/g, "");
                 setLat(value);
 
                 clearTimeout(window.reverseTimeout);
-
                 window.reverseTimeout = setTimeout(() => {
                   if (value && lng) {
                     getPlaceFromCoords(value, lng);
@@ -174,18 +185,14 @@ function ReportIssue() {
               style={input}
             />
 
-            {/* LNG */}
             <input
               placeholder="Longitude"
               value={lng}
               onChange={(e) => {
-                let value = e.target.value;
-                value = value.replace(/[^\d.-]/g, "");
-
+                let value = e.target.value.replace(/[^\d.-]/g, "");
                 setLng(value);
 
                 clearTimeout(window.reverseTimeout);
-
                 window.reverseTimeout = setTimeout(() => {
                   if (lat && value) {
                     getPlaceFromCoords(lat, value);

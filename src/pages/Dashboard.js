@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { IssueContext } from "../context/IssueContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,11 +23,17 @@ import {
 } from "recharts";
 
 function Dashboard() {
-
   const { issues, deleteIssue, updateStatus } = useContext(IssueContext);
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  /* 🔐 PROTECT PAGE */
+  useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   /* LOGOUT */
   const logout = () => {
@@ -35,12 +41,12 @@ function Dashboard() {
     navigate("/");
   };
 
-  /* ISSUE ANALYTICS */
+  /* ISSUE ANALYTICS (FIXED MATCHING) */
   const chartData = [
-    { name: "Road", issues: issues.filter(i => i.category === "Road Damage").length },
-    { name: "Garbage", issues: issues.filter(i => i.category === "Garbage").length },
-    { name: "Water", issues: issues.filter(i => i.category === "Water Leakage").length },
-    { name: "Light", issues: issues.filter(i => i.category === "Street Light").length }
+    { name: "Road", issues: issues.filter(i => i.category?.includes("Road")).length },
+    { name: "Garbage", issues: issues.filter(i => i.category?.includes("Garbage")).length },
+    { name: "Water", issues: issues.filter(i => i.category?.includes("Water")).length },
+    { name: "Light", issues: issues.filter(i => i.category?.includes("Light")).length }
   ];
 
   return (
@@ -114,7 +120,7 @@ function Dashboard() {
         {/* BODY */}
         <div style={{ padding: "40px" }}>
 
-          <h1 className="fade-up" style={{ marginBottom: "30px" }}>
+          <h1 style={{ marginBottom: "30px" }}>
             Dashboard Overview
           </h1>
 
@@ -203,7 +209,9 @@ function Dashboard() {
                 <p><b>📍 {issue.locationName}</b></p>
 
                 <p>
-                  {issue.lat.toFixed(5)}, {issue.lng.toFixed(5)}
+                  {issue.lat ? issue.lat.toFixed(5) : "N/A"},
+                  {" "}
+                  {issue.lng ? issue.lng.toFixed(5) : "N/A"}
                 </p>
 
                 {/* ACTION BUTTONS */}

@@ -8,6 +8,7 @@ import {
 
 /* COMPONENTS */
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 /* PAGES */
 import Login from "./pages/Login";
@@ -16,18 +17,17 @@ import Dashboard from "./pages/Dashboard";
 import ReportIssue from "./pages/ReportIssue";
 import Services from "./pages/Services";
 import Map from "./pages/Map";
+import Admin from "./pages/Admin";
 
 /* CONTEXT */
 import { IssueProvider } from "./context/IssueContext";
 
 
-/* LAYOUT */
+/* ================= LAYOUT ================= */
 
 function Layout() {
-
   const location = useLocation();
 
-  /* HIDE NAVBAR ONLY ON LOGIN */
   const hideNavbar = location.pathname === "/";
 
   return (
@@ -36,15 +36,23 @@ function Layout() {
 
       <Routes>
 
-        {/* LOGIN */}
+        {/* PUBLIC ROUTES */}
         <Route path="/" element={<Login />} />
-
-        {/* MAIN PAGES */}
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/map" element={<Map />} />
         <Route path="/report" element={<ReportIssue />} />
         <Route path="/services" element={<Services />} />
+
+        {/* 🔐 PROTECTED ADMIN ROUTE */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute roleRequired="admin">
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </>
@@ -52,11 +60,11 @@ function Layout() {
 }
 
 
-/* APP */
+/* ================= APP ================= */
 
 function App() {
   return (
-    <IssueProvider>   {/* 🔥 IMPORTANT */}
+    <IssueProvider>
       <Router>
         <Layout />
       </Router>
