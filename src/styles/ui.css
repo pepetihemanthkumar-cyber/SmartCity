@@ -1,0 +1,224 @@
+/* ================= GLOBAL RESET ================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+html, body {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ================= THEME ================= */
+
+/* 🌙 DARK MODE */
+body.dark {
+  background: #020617;
+  color: #ffffff;
+}
+
+/* ☀ LIGHT MODE */
+body:not(.dark) {
+  background: #f8fafc;
+  color: #111827;
+}
+
+/* ================= BUTTONS ================= */
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+}
+
+/* PRIMARY */
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+/* DANGER */
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+/* SUCCESS */
+.btn-success {
+  background: #22c55e;
+  color: white;
+}
+
+/* 🔥 Hover */
+.btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* 🔥 Ripple */
+.btn::after {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.btn:active::after {
+  transform: scale(1);
+  opacity: 1;
+  transition: 0s;
+}
+
+/* ================= INPUT ================= */
+
+input, select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  outline: none;
+  width: 100%;
+}
+
+body.dark input,
+body.dark select {
+  background: #020617;
+  color: white;
+}
+
+body:not(.dark) input,
+body:not(.dark) select {
+  background: white;
+  color: black;
+}
+
+input:focus {
+  border-color: #2563eb;
+}
+
+/* ================= CARD ================= */
+
+.card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(25px);
+  border-radius: 16px;
+  padding: 20px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+/* ================= GLASS ================= */
+
+.glass {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+}
+
+/* ================= DROPDOWN ================= */
+
+.dropdown {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.dropdown p {
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dropdown p:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* ================= FADE ================= */
+
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/* ================= SKELETON ================= */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.05) 25%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ================= SCROLLBAR ================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+/* ================= TEXT ================= */
+
+.text-muted {
+  opacity: 0.6;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ================= TOAST ================= */
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #111;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  animation: slideIn 0.3s ease;
+  z-index: 9999;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0;}
+  to { transform: translateX(0); opacity: 1;}
+}

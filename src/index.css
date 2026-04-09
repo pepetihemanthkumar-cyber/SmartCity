@@ -1,0 +1,220 @@
+/* =========================
+   LEAFLET
+========================= */
+@import "leaflet/dist/leaflet.css";
+
+/* =========================
+   RESET
+========================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* =========================
+   BODY
+========================= */
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background:#f4f6fb;
+  color:#111;
+  transition: background 0.4s ease, color 0.4s ease;
+  overflow-x:hidden;
+}
+
+body.dark{
+  background:#020617;
+  color:#e5e7eb;
+}
+
+/* =========================
+   CARD
+========================= */
+.card{
+  background:white;
+  color:#111;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Dark card */
+body.dark .card{
+  background:#111827;
+  color:#e5e7eb;
+}
+
+/* =========================
+   🔥 FIX HEADINGS & LABELS (MOST IMPORTANT)
+========================= */
+
+/* Light mode */
+.card h1,
+.card h2,
+.card h3,
+.card label,
+.card small {
+  color:#111 !important;
+}
+
+/* Dark mode */
+body.dark .card h1,
+body.dark .card h2,
+body.dark .card h3,
+body.dark .card label,
+body.dark .card small {
+  color:#e5e7eb !important;
+}
+
+/* Specific fixes */
+.report-title {
+  font-weight:600;
+}
+
+.location-label {
+  font-size:14px;
+}
+
+/* =========================
+   GLASS
+========================= */
+.glass{
+  backdrop-filter:blur(12px);
+  background:rgba(255,255,255,0.15);
+  border-radius:12px;
+  color:#111;
+}
+
+body.dark .glass{
+  background:rgba(0,0,0,0.4);
+  color:#e5e7eb;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input,
+textarea,
+select{
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  color:#111;
+  background:white;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select{
+  background:#1f2937;
+  color:#e5e7eb;
+  border:1px solid #374151;
+}
+
+/* Placeholder fix */
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+  color:#9ca3af;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button{
+  cursor:pointer;
+  border-radius:6px;
+}
+
+/* =========================
+   LINKS
+========================= */
+a{
+  color:#2563eb;
+}
+
+body.dark a{
+  color:#60a5fa;
+}
+
+/* =========================
+   MAP
+========================= */
+.leaflet-container{
+  width:100%;
+  height:100%;
+  border-radius:12px;
+}
+
+/* Only controls readable */
+.leaflet-control,
+.leaflet-popup-content{
+  color:#111 !important;
+}
+
+/* =========================
+   SEARCH DROPDOWN
+========================= */
+.search-dropdown{
+  position:absolute;
+  width:100%;
+  background:#ffffff;
+  color:#111;
+  border-radius:8px;
+  margin-top:5px;
+  max-height:220px;
+  overflow-y:auto;
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
+  z-index:9999;
+}
+
+.search-item{
+  padding:10px;
+  cursor:pointer;
+  color:#111;
+  background:#fff;
+  border-bottom:1px solid #eee;
+}
+
+.search-item:hover{
+  background:#f1f5f9;
+}
+
+/* Dark dropdown */
+body.dark .search-dropdown{
+  background:#1f2937;
+  color:#e5e7eb;
+}
+
+body.dark .search-item{
+  background:#1f2937;
+  color:#e5e7eb;
+}
+
+body.dark .search-item:hover{
+  background:#374151;
+}
+
+/* =========================
+   GLOBAL DARK TEXT FIX
+========================= */
+body.dark p,
+body.dark span,
+body.dark div{
+  color:#e5e7eb;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#2563eb;
+}
+
+body.dark ::-webkit-scrollbar-track{
+  background:#111827;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- ✅ Responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Title -->
+  <title>Smart City Platform</title>
+
+  <!-- ✅ Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ✅ Animations (your custom CSS) -->
+  <link rel="stylesheet" href="/src/styles/animations.css" />
+
+  <!-- 🔥 GOOGLE LOGIN SCRIPT (REQUIRED) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- ✅ Favicon (optional but pro look) -->
+  <link rel="icon" href="/favicon.ico" />
+
+  <!-- 🔥 FIX: Remove default margin -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #020617; /* match your app theme */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ React Root -->
+  <div id="root"></div>
+
+  <!-- 🔥 VITE ENTRY (IMPORTANT) -->
+  <script type="module" src="/src/main.jsx"></script>
+
+</body>
+</html>
